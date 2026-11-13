@@ -1,0 +1,23 @@
+{
+  "name": "ai-marketplace",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "workspaceFolder": "/workspaces/ai-marketplace",
+  "features": {
+    "https://github.com/armckinney/containers/releases/latest/download/devcontainer-feature-antigravity.tgz": {},
+    "https://github.com/armckinney/containers/releases/latest/download/devcontainer-feature-codex.tgz": {},
+    "https://github.com/armckinney/containers/releases/latest/download/devcontainer-feature-gyrus.tgz": {},
+    "https://github.com/armckinney/containers/releases/latest/download/devcontainer-feature-vscode-customizations.tgz": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "github.vscode-github-actions",
+        "ms-vscode.makefile-tools"
+      ]
+    }
+  }
+}

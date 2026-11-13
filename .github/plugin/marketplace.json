@@ -1,0 +1,27 @@
+{
+  "name": "ai-marketplace",
+  "owner": {
+    "name": "Andrew McKinney"
+  },
+  "interface": {
+    "displayName": "armckinney AI Marketplace"
+  },
+  "metadata": {
+    "description": "Personal AI Marketplace for plugins, skills, rules, agents, hooks, and MCP servers",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "gyrus",
+      "source": "./plugins/gyrus",
+      "description": "Gyrus: Unified Context Control Plane & Memory Engine for AI Agents",
+      "version": "1.0.0"
+    },
+    {
+      "name": "dev-essentials",
+      "source": "./plugins/dev-essentials",
+      "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+      "version": "0.1.0"
+    }
+  ]
+}

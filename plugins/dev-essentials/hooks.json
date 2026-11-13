@@ -1,0 +1,17 @@
+{
+  "example-post-edit-check": {
+    "enabled": false,
+    "PostToolUse": [
+      {
+        "matcher": "write_file|edit_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo 'Replace with project lint/format command'",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}
