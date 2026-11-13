@@ -1,0 +1,30 @@
+{
+  "name": "ai-marketplace",
+  "interface": {
+    "displayName": "armckinney AI Marketplace"
+  },
+  "plugins": [
+    {
+      "name": "gyrus",
+      "source": {
+        "source": "local",
+        "path": "./plugins/gyrus"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
+    },
+    {
+      "name": "dev-essentials",
+      "source": {
+        "source": "local",
+        "path": "./plugins/dev-essentials"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

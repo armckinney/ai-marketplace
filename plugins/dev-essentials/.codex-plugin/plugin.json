@@ -1,0 +1,19 @@
+{
+  "name": "dev-essentials",
+  "version": "0.1.0",
+  "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+  "author": {
+    "name": "Andrew McKinney"
+  },
+  "repository": "https://github.com/armckinney/ai-marketplace",
+  "license": "Apache-2.0",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Dev Essentials",
+    "shortDescription": "Core personal development workflow, visual explanations, and documentation standards",
+    "developerName": "Andrew McKinney",
+    "category": "Productivity",
+    "logo": "./assets/logo.svg"
+  }
+}

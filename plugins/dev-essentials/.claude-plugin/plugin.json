@@ -1,0 +1,23 @@
+{
+  "name": "dev-essentials",
+  "version": "0.1.0",
+  "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+  "author": {
+    "name": "Andrew McKinney",
+    "url": "https://github.com/armckinney"
+  },
+  "repository": "https://github.com/armckinney/ai-marketplace",
+  "license": "Apache-2.0",
+  "skills": "./skills/",
+  "agents": [
+    "./agents/code-reviewer.md"
+  ],
+  "hooks": "./hooks.json",
+  "keywords": [
+    "personal-dev",
+    "validation-driven",
+    "visual-explainer",
+    "documentation",
+    "code-review"
+  ]
+}

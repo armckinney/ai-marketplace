@@ -1,0 +1,20 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "dev-essentials",
+  "version": "0.1.0",
+  "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+  "author": {
+    "name": "Andrew McKinney",
+    "url": "https://github.com/armckinney"
+  },
+  "repository": "https://github.com/armckinney/ai-marketplace",
+  "license": "Apache-2.0",
+  "logo": "assets/logo.svg",
+  "keywords": [
+    "personal-dev",
+    "validation-driven",
+    "visual-explainer",
+    "documentation",
+    "code-review"
+  ]
+}

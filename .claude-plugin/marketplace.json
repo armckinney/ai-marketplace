@@ -1,0 +1,36 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "ai-marketplace",
+  "description": "Personal AI Marketplace for plugins, skills, rules, agents, hooks, and MCP servers",
+  "owner": {
+    "name": "Andrew McKinney",
+    "url": "https://github.com/armckinney"
+  },
+  "plugins": [
+    {
+      "name": "gyrus",
+      "description": "Gyrus: Unified Context Control Plane & Memory Engine for AI Agents",
+      "version": "1.0.0",
+      "author": {
+        "name": "Andrew McKinney"
+      },
+      "category": "development",
+      "source": "./plugins/gyrus",
+      "homepage": "https://github.com/armckinney/gyrus",
+      "repository": "https://github.com/armckinney/ai-marketplace",
+      "license": "Apache-2.0"
+    },
+    {
+      "name": "dev-essentials",
+      "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+      "version": "0.1.0",
+      "author": {
+        "name": "Andrew McKinney"
+      },
+      "category": "development",
+      "source": "./plugins/dev-essentials",
+      "repository": "https://github.com/armckinney/ai-marketplace",
+      "license": "Apache-2.0"
+    }
+  ]
+}
