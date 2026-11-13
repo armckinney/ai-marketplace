@@ -40,4 +40,4 @@ Equips AI coding assistants to resolve architectural context, capture engineerin
 
 ## Prerequisites
 
-- The `gyrus` CLI binary must be installed and available on `PATH` for MCP and CLI operations.
+- The `gyrus` CLI binary must be installed and available on `PATH` for MCP and CLI operations; see the [`armckinney/gyrus` installation instructions](https://github.com/armckinney/gyrus#get-started).
