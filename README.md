@@ -10,6 +10,7 @@ Licensed under [Apache-2.0](LICENSE).
 | :--- | :--- | :--- | :--- |
 | [`gyrus`](plugins/gyrus) | `1.0.0` | Gyrus: Unified Context Control Plane & Memory Engine for AI Agents | [Plugin Guide](docs/plugins/gyrus.md) |
 | [`dev-essentials`](plugins/dev-essentials) | `0.1.0` | Core personal development workflow, visual explanations, documentation standards, and engineering guardrails | [Plugin Guide](docs/plugins/dev-essentials.md) |
+| [`career-kit`](plugins/career-kit) | `0.1.0` | Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials | [Plugin Guide](docs/plugins/career-kit.md) |
 
 ## Native Installation
 
@@ -21,6 +22,7 @@ Install directly from GitHub using each harness's native commands:
 codex plugin marketplace add armckinney/ai-marketplace
 codex plugin add gyrus@ai-marketplace
 codex plugin add dev-essentials@ai-marketplace
+codex plugin add career-kit@ai-marketplace
 ```
 
 ### Google Antigravity CLI (`agy`)
@@ -28,6 +30,7 @@ codex plugin add dev-essentials@ai-marketplace
 ```bash
 agy plugin install https://github.com/armckinney/ai-marketplace/tree/main/plugins/gyrus
 agy plugin install https://github.com/armckinney/ai-marketplace/tree/main/plugins/dev-essentials
+agy plugin install https://github.com/armckinney/ai-marketplace/tree/main/plugins/career-kit
 ```
 
 ### GitHub Copilot CLI (`copilot`)
@@ -36,6 +39,7 @@ agy plugin install https://github.com/armckinney/ai-marketplace/tree/main/plugin
 copilot plugin marketplace add armckinney/ai-marketplace
 copilot plugin install gyrus@ai-marketplace
 copilot plugin install dev-essentials@ai-marketplace
+copilot plugin install career-kit@ai-marketplace
 ```
 
 ### Claude Code CLI (`claude`)
@@ -44,6 +48,7 @@ copilot plugin install dev-essentials@ai-marketplace
 claude plugin marketplace add armckinney/ai-marketplace
 claude plugin install gyrus@ai-marketplace
 claude plugin install dev-essentials@ai-marketplace
+claude plugin install career-kit@ai-marketplace
 ```
 
 ## Authoring & Validation
@@ -71,5 +76,6 @@ make list
 
 - [Plugin Guide: `gyrus`](docs/plugins/gyrus.md)
 - [Plugin Guide: `dev-essentials`](docs/plugins/dev-essentials.md)
+- [Plugin Guide: `career-kit`](docs/plugins/career-kit.md)
 - [Harness Compatibility Matrix](docs/harness-compatibility.md)
 - [Plugin Authoring & Artifact Scoping Guide](docs/authoring-plugins.md)

@@ -25,6 +25,17 @@
         "installation": "AVAILABLE"
       },
       "category": "Productivity"
+    },
+    {
+      "name": "career-kit",
+      "source": {
+        "source": "local",
+        "path": "./plugins/career-kit"
+      },
+      "policy": {
+        "installation": "AVAILABLE"
+      },
+      "category": "Productivity"
     }
   ]
 }

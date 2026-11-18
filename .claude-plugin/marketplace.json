@@ -31,6 +31,18 @@
       "source": "./plugins/dev-essentials",
       "repository": "https://github.com/armckinney/ai-marketplace",
       "license": "Apache-2.0"
+    },
+    {
+      "name": "career-kit",
+      "description": "Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials",
+      "version": "0.1.0",
+      "author": {
+        "name": "Andrew McKinney"
+      },
+      "category": "productivity",
+      "source": "./plugins/career-kit",
+      "repository": "https://github.com/armckinney/ai-marketplace",
+      "license": "Apache-2.0"
     }
   ]
 }
