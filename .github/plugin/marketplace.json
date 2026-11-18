@@ -22,6 +22,12 @@
       "source": "./plugins/dev-essentials",
       "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
       "version": "0.1.0"
+    },
+    {
+      "name": "career-kit",
+      "source": "./plugins/career-kit",
+      "description": "Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials",
+      "version": "0.1.0"
     }
   ]
 }
