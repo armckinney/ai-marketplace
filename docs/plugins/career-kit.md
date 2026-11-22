@@ -1,6 +1,6 @@
 # `career-kit` Plugin
 
-- **Version**: `0.1.0`
+- **Version**: `1.0.0`
 - **License**: `Apache-2.0`
 - **Source**: [`plugins/career-kit/`](../../plugins/career-kit)
 

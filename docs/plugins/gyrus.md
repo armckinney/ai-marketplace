@@ -7,36 +7,30 @@
 
 ## Purpose
 
-Equips AI coding assistants to resolve architectural context, capture engineering decisions, and maintain structured OKF documentation through the **Gyrus Context Control Plane** (via MCP tools or the `gyrus` CLI) without duplicating low-level code diffs.
+Equips AI coding assistants to resolve architectural context, capture engineering decisions, and maintain structured OKF (Open Knowledge Format) documentation through the **Gyrus Context Control Plane** (via MCP tools or the `gyrus` CLI) without duplicating low-level code diffs.
 
 ## What's Included
 
 | Component | Path | Summary |
 | :--- | :--- | :--- |
-| **Ruleset** | [`rules/AGENTS.md`](../../plugins/gyrus/rules/AGENTS.md) | Always-on SDLC & OKF governance rules (loaded automatically in Antigravity). |
-| **Skills (4)** | [`skills/`](../../plugins/gyrus/skills) | Workflows for SDLC context management, repo priming, legacy migration, and release testing. |
+| **Ruleset** | [`rules/AGENTS.md`](../../plugins/gyrus/rules/AGENTS.md) | Always-on documentation strategy, dependency graph, and OKF governance rules (auto-loaded in Antigravity). |
+| **Skills (2)** | [`skills/`](../../plugins/gyrus/skills) | Operational workflows for Gyrus MCP/CLI context management and repository priming. |
 | **MCP Server** | [`mcp.json`](../../plugins/gyrus/mcp.json), [`.mcp.json`](../../plugins/gyrus/.mcp.json) | Launches local stdio server `gyrus mcp serve`. |
 | **Subagents** | — | None included. |
 
 ## Top-Level Ruleset (`rules/AGENTS.md`)
 
-1. **Source vs. Gyrus Boundary**: Source code owns implementation logic and routine bug fixes; Gyrus owns architectural intent and system governance.
-2. **3-Phase SDLC Lifecycle**:
-   - **Plan**: `prd`, `improvement-proposal`, `specification`, `adr`, `standards`
-   - **Implement**: `technical-reference`, `guide` (while source code remains canonical for logic)
-   - **Post-Implement**: `release-note`, `product`
-3. **Context Resolution First**: Query `gyrus_suggest_context` / `gyrus_search` (or `gyrus suggest-context --prompt "<task>" --json`) before architectural changes.
-4. **Mutability Rules**: Living docs (`prd`, `specification`, `standards`, `technical-reference`, `guide`, `product`) are updated in place; accepted decision logs (`adr`, `improvement-proposal`, `release-note`) are immutable and superseded via a new linked record (`--rel-type supersedes`).
-5. **OKF Schema & Exit Codes**: Enforces lowercase IDs (`^[a-z0-9-_]+$`), required YAML frontmatter (`id`, `title`, `category`, `type`, `tenant`, `version`, `status`), and standard CLI exit codes (`0`–`5`).
+1. **Core Principles**: Source code owns implementation; Gyrus owns architectural intent, contracts, and rationale. Resolve context before architectural changes, update owning concepts in the same change as behavior shifts, avoid link-only stubs, and right-size documentation to the change.
+2. **Document Dependency Graph (Internal Development Flow)**: Enforces progression from `prd` → `improvement-proposal` → `specification` / `adr` / `standards` → `technical-reference` / `guide` → `product` → `release-note` (when publishing a release).
+3. **11 Document Types, Mutability & Scope**: Defines living types (`prd`, `specification`, `standards`, `technical-reference`, `guide`, `product`, `glossary`, `freeform`) vs. historical immutable types (`improvement-proposal`, `adr`, `release-note`), plus `reference` vs. `projects/<project>` scope selection.
+4. **Identity, Links & Immutability**: Enforces lowercase local IDs (`^[a-z0-9-_]+$`), qualified names (`<tenant>/reference/<id>` or `<tenant>/projects/<project>/<id>`), minimal typed links (`depends_on`, `implements`, `supersedes`, `mitigates`), superseding protocol for accepted ADRs/proposals, and repository-relative body links.
 
 ## Skills
 
 | Skill | When to Use | Key Details | References |
 | :--- | :--- | :--- | :--- |
-| **`gyrus`** | Resolving context, creating/updating/linking concepts, or switching Git initiative branches (`--git-branch` / `gyrus_git_switch`). | Covers primary MCP tools (`gyrus_suggest_context`, `gyrus_search`, `gyrus_get`, `gyrus_create`, `gyrus_update`, `gyrus_link`), CLI fallbacks, qualified names (`tenant/reference/id`), and `okf` / `postgres_fts` / `git` backends. | [`okf-schemas.md`](../../plugins/gyrus/skills/gyrus/references/okf-schemas.md) |
-| **`gyrus-index`** | Onboarding a new or existing repository into Gyrus for the first time. | Surveys repo structure, proposes 3–4 baseline living docs (`spec`, `standards`, `technical-reference`, `guide`), confirms with the user, creates `.gyrus/concepts/` docs, and verifies retrieval. | — |
-| **`gyrus-migrate-sqlite-to-okf`** | Upgrading legacy Gyrus collections or SQLite graph edges into qualified `{concept, rel}` OKF links. | Read-only preflight, explicit identity mapping, isolated staging/backups, parity checks, and zero-body-mutation guarantees (excludes PostgreSQL exports). | [`sqlite-to-okf.md`](../../plugins/gyrus/skills/gyrus-migrate-sqlite-to-okf/references/sqlite-to-okf.md) |
-| **`gyrus-test-lifecycle`** | Verifying an installed `gyrus` binary end-to-end without source code or dev tooling. | Exercises CLI, MCP, and Web UI in an isolated temp workspace/home using `localfs`/OKF, leaving production collections untouched. | [`consumer-lifecycle.md`](../../plugins/gyrus/skills/gyrus-test-lifecycle/references/consumer-lifecycle.md) |
+| **`gyrus`** | Resolving context, authoring/updating/linking concepts, switching Git initiative branches (`--git-branch` / `gyrus_git_switch`), or checking CLI exit codes. | Covers User Discovery Flow, authoring & ADR checklists, primary MCP tools, CLI fallbacks, programmatic exit codes (`0`–`5`), qualified names, and `okf` / `postgres_fts` / `git` backends. | [`okf-schemas.md`](../../plugins/gyrus/skills/gyrus/references/okf-schemas.md) |
+| **`gyrus-index`** | Onboarding a new or existing repository into Gyrus for the first time. | Surveys repo structure, proposes project- or reference-scoped living docs (`specification`, `standards`, `technical-reference`, `guide`, optional `glossary`), confirms with the user, creates concepts via MCP/CLI, and verifies retrieval and validation. | — |
 
 ## Prerequisites
 
