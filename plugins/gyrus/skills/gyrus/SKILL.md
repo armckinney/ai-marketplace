@@ -1,77 +1,78 @@
 ---
 name: gyrus
-description: Gyrus Unified Context Control Plane & Memory Engine agent skill. Guides developers and agents through the 3-phase SDLC documentation lifecycle (Plan, Implement, Post-Implement) using native MCP tools or CLI commands.
+description: >-
+  Gyrus Unified Context Control Plane & Memory Engine operational skill. Guides
+  discovering, searching, and traversing architectural context via MCP tools as
+  well as authoring concepts, managing qualified links, structuring user-facing
+  docs, and using Git initiative branches within OKF collections.
 applyTo:
   - "**"
 ---
 
-# Gyrus Agent Skill: Context Control Plane & SDLC Engine
+# Gyrus Agent Skill: Context Discovery & Operations
 
-This skill equips AI coding assistants (Google Antigravity, GitHub Copilot, OpenAI Codex, Claude) to discover, synthesize, create, and maintain architectural context through the **Gyrus Context Control Plane**.
+Operational guide for **discovering, querying, traversing, and authoring** architectural context in Gyrus via MCP. Always-on governance rules, the **Internal Development Flow** dependency graph, Read/Write scoping defaults, and the 11-type mutability table live in `rules/AGENTS.md`.
 
----
+## Context Discovery & Querying Workflow
 
-## 💡 The Gyrus SDLC Lifecycle
+```mermaid
+flowchart LR
+    Discover["1. Discover: gyrus_suggest_context / gyrus_search"] --> Read["2. Read: gyrus_get (qualified name)"]
+    Read --> Graph["3. Expand Graph: gyrus_neighbors / gyrus_traverse"]
+    Graph --> Act["4. Apply Context or Update Owning Concept"]
+```
 
-Use this skill whenever you need to resolve architectural context, align with requirements, or record engineering decisions across the 3 SDLC phases:
+1. **Discover Broadly First**:
+   - Use `gyrus_suggest_context(prompt, scope)` for task-oriented lookup.
+   - Use `gyrus_search` for targeted keyword queries or structured metadata filtering (`type`, `category`, `status`, `tag`, `scope`, `project`, `tenant`). Pass an empty `query` for unlimited metadata browsing; keyword search defaults to 10 results (`max_results` overrides).
+   - **Read Scoping**: Default to `scope: "all"` so cross-project `standards`, `glossary`, and shared `adr` concepts in `reference` aren't missed alongside repo-specific docs in `projects/<project>`. Narrow to `scope: "project"` + `project` when filtering noise, or `scope: "reference"` when checking shared standards only.
+2. **Fetch Exact Concepts**: Call `gyrus_get` with the full qualified name (`<tenant>/reference/<id>` or `<tenant>/projects/<project>/<id>`).
+3. **Traverse Dependencies & Backlinks**:
+   - Call `gyrus_neighbors(id, direction: "both" | "incoming" | "outgoing", rel_type)` to see what a concept `depends_on` / `implements` / `supersedes` / `mitigates` and what links *into* it (backlinks are derived automatically).
+   - Call `gyrus_traverse(start_id, max_depth)` to inspect multi-hop architectural dependencies and blast radius before changing contracts.
 
-1. **Phase 1: Plan (Architecture & Design)**:
-   - Check existing PRDs and blueprints before proposing structural changes.
-   - Propose an Improvement Proposal (`improvement-proposal`) for major system designs.
-   - Record immutable Architectural Decision Records (`adr`) for key choices and tradeoffs.
-   - Maintain living system specifications (`specification`) and standards (`standards`).
-2. **Phase 2: Implement (Build & Interfaces)**:
-   - Implement source code to satisfy specifications. Source code is the truth for code; never duplicate code diffs in docs.
-   - Update Technical Reference (`technical-reference`) when public APIs, CLI syntax, or configs change.
-   - Update Guides (`guide`) when setup runbooks or onboarding flows change.
-3. **Phase 3: Post-Implement (Release & Portal)**:
-   - Draft Release Notes (`release-note`) for version milestones.
-   - Maintain the Product Page (`product`) doc portal.
+## Authoring & Maintenance Workflow
 
----
+1. **Resolve First**: Run the discovery workflow above to find owning PRDs, specs, ADRs, and standards before editing behavior or creating new concepts.
+2. **Scope Writes Explicitly**: Use `scope: "project"` + `project` for repo-specific docs; use `scope: "reference"` *only* for shared cross-project standards, decisions, or glossaries.
+3. **Preserve Owning Contracts**: Update the owning concept via `gyrus_update` (pass `expected_version` to prevent stale overwrites) with full explanations and examples—avoid link-only stubs that strip rationale. Check `gyrus_schema_get(type)` when you need a contract template.
+4. **Ground Against Schemas**: Match examples to actual CLI, MCP, and config behavior, including failure modes and known limitations.
+5. **ADR Structure**: Every `adr` must include: *Context / Problem / Objectives*, *Decision & Rationale*, *Alternatives (Pros / Cons)*, *Consequences*, and *Compliance & Verification*.
+6. **Verify Before Finishing**: Confirm scope, YAML metadata, qualified links, and repository-relative body links; report verified vs. skipped checks explicitly.
 
-## 🛠️ Primary Interface: Model Context Protocol (MCP) Tools
+## User Discovery & Consumption Flow
 
-- **`gyrus_suggest_context`**: `{ "prompt": string, "max_concepts"?: int, "scope"?: string, "project"?: string }`
-- **`gyrus_search`**: `{ "query": string, "max_results"?: int, "scope"?: string, "project"?: string, "tenant"?: string }`
-- **`gyrus_get`**: `{ "id": string }`
-- **`gyrus_create`**: `{ "id": string, "title": string, "category": string, "type": string, "tenant": string, "status": string, "content": string, "scope"?: string, "project"?: string }`
-- **`gyrus_update`**: `{ "id": string, "title"?: string, "status"?: string, "content"?: string, "expected_version"?: int }`
-- **`gyrus_link`**: `{ "from_id": string, "to_id": string, "rel_type": string }`
+Structure user-facing concepts so each layer links cleanly to the next level of detail:
 
----
+```mermaid
+flowchart LR
+    Awareness["Release / Repo Discovery"] --> Product["Product Page / README"]
+    Product --> Guide["Setup & Task Guides"]
+    Guide --> Reference["CLI, MCP & Config References"]
+    Reference --> Spec["Specifications & Architecture"]
+    Spec --> ADR["ADRs & Rationale"]
+```
 
-## 💻 Fallback & Admin Interface: Gyrus CLI
+- Start readers with value and navigation (`product` / `README.md`), guide them through complete workflows (`guide`), answer exact syntax questions (`technical-reference`), and link deeper contracts and tradeoffs (`specification`, `adr`).
 
-- `gyrus suggest-context --prompt "<task>" --json`
-- `gyrus search --query "<query>" --max-results 10 --json`
-- `gyrus get <id> --json`
-- `gyrus create --id "<id>" --title "<title>" --category "<cat>" --type "<type>" --tenant "<tenant>" --content "<md>"`
-- `gyrus update <id> --status "<status>" --expected-version <v>`
-- `gyrus link <from-id> <to-id> --rel-type <type>`
+## MCP Tool Overview
 
-Keyword search defaults to ten results. CLI `--max-results` and MCP `max_results` pass through to the selected provider; positive limits also cap metadata browsing. Empty-query browsing is unlimited by default. SQLite index/graph/search providers and the sync command/tool have been removed; file-backed OKF data is read directly.
+| Category | Tools | Purpose |
+| :--- | :--- | :--- |
+| **Discovery & Graph** | `gyrus_suggest_context`, `gyrus_search`, `gyrus_get`, `gyrus_neighbors`, `gyrus_traverse` | Find concepts by prompt or metadata, read by qualified name, and inspect incoming/outgoing or multi-hop relationships |
+| **Authoring & Links** | `gyrus_create`, `gyrus_update`, `gyrus_link`, `gyrus_unlink`, `gyrus_archive` | Create concepts (local `id` + explicit scope), update with `expected_version`, manage typed edges, or archive obsolete concepts |
+| **Schemas** | `gyrus_schema_list`, `gyrus_schema_get`, `gyrus_schema_set`, `gyrus_schema_delete` | Inspect or manage OKF concept templates by type |
+| **Git Sessions** | `gyrus_git_status`, `gyrus_git_switch` | Check active branch state or switch between `direct` (trunk) and `branching` (initiative branch) modes |
 
-Supported search providers are `okf` (direct keyword scan) and `postgres_fts` (native PostgreSQL FTS). PostgreSQL stale updates return concurrency errors, matching CLI exit code 4.
+> **CLI Fallback**: MCP is the primary interface. Only fall back to the `gyrus` CLI (`gyrus --help`) if MCP is unavailable, or to validate manually edited local OKF files with `gyrus validate <filepath> --json`.
 
----
+## Qualified Identity, Links & Supported Stacks
 
-## 📚 Skill Reference Guides
+- **Create vs. Existing Ops**: `gyrus_create` takes a local frontmatter `id` plus `tenant`/`scope`/`project`. All reads, updates, links, and traversals require a full qualified name (`root/reference/adr-example` or `root/projects/gyrus/spec-001-contract-schema`) with no short-ID fallback.
+- **Links**: Persist only `{concept: <qualified-name>, rel: <relationship>}` (`depends_on`, `implements`, `supersedes`, `mitigates`). Never store inverse copies; typed links and required Gyrus metadata extend upstream OKF.
+- **Stacks**: `localfs`/OKF, `git`/OKF, or `postgres` (with PostgreSQL index/graph and native FTS). SQLite index/graph/search providers and `sync` are removed—OKF reads files directly. Unknown config keys and malformed files fail strictly without fallback.
+- **Git Initiative Sessions**: Config holds `repo_url`, `trunk_branch` (default `main`), and `commit_strategy: direct | branching` (default `direct`). Select an initiative branch at runtime via `gyrus_git_switch({strategy: "branching", branch: "initiative/name"})` and return to trunk with `{strategy: "direct"}`. Each MCP process owns its selection (re-select after restart), and a `branching` server rejects knowledge ops until a branch is selected. Gyrus never creates PRs, merges, rebases, or force-pushes—humans merge initiative branches in the Git host.
 
-- 📄 **[OKF Schemas Reference](references/okf-schemas.md)**
-- **[Installed-release lifecycle verification](../gyrus-test-lifecycle/SKILL.md):** Run agent-led CLI, MCP, and UI checks with isolated consumer fixtures, without repository source or development tooling.
+## Reference
 
-
-## Qualified identity and relationships
-
-Create takes a local frontmatter id and tenant/scope/project. All existing-concept `id`, `from_id`, `to_id`, and `start_id` arguments require a full name: `root/reference/adr-example` or `root/projects/gyrus/ticket-003`. No short-ID fallback is supported. API envelopes/references expose the derived name; Markdown frontmatter keeps the local id. Use `gyrus get root/reference/adr-example --json` and `gyrus link root/projects/gyrus/ticket-003 root/reference/adr-example --rel-type depends_on`.
-
-Persist links only as `{concept: <qualified-name>, rel: <relationship>}`. Dependencies, old link keys, and per-link creation metadata are obsolete. Use incoming neighbors for backlinks; do not write inverse copies. Retain depends_on, implements, supersedes, and mitigates; do not impose parent/child or DAG rules. Use the packaged migration skill for legacy data. Typed links and Gyrus-required metadata are extensions to upstream OKF.
-
-## Supported stacks and Git initiative sessions
-
-Use only localfs/OKF, Git/OKF, or PostgreSQL with PostgreSQL index/graph and native FTS. Cloud/blob providers, hybrid stacks, and provider aliases are removed. Configuration is strict: unknown keys and malformed files fail rather than falling back.
-
-Git config contains `repo_url`, `trunk_branch` (default `main`), and `commit_strategy: direct | branching` (default `direct`). Initiative branch names are runtime inputs, never configuration fields. Use CLI `--git-branch initiative/name` or MCP `gyrus_git_switch({strategy: "branching", branch: "initiative/name"})`; inspect `gyrus_git_status`. Return to trunk with `{strategy: "direct"}`. Each MCP process owns its selection; restart requires selecting again. All knowledge tools, resources, schemas, and queries use the selected branch. A branching server without selection rejects knowledge operations until an initiative is selected.
-
-HTTPS credentials come from the configured Git credential helper. Gyrus performs no PR creation, merging, rebasing, or force-pushing. Humans review and merge initiative branches in their Git host. Existing initiative branches do not automatically integrate trunk changes.
+- **[OKF Schemas Reference](references/okf-schemas.md)**: Full frontmatter fields, allowed categories/types, and status transition matrix.

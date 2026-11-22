@@ -1,50 +1,62 @@
-# Gyrus Context Control Plane & SDLC Directives
+# Gyrus Context Control Plane & Documentation Directives
 
-This document instructs AI agents (Antigravity, Claude Code, GitHub Copilot, OpenAI Codex) on interacting with the Gyrus Context Control Plane and working within the OKF documentation framework.
+Always-on governance rules for discovering, querying, and authoring OKF (Open Knowledge Format) concepts through the Gyrus Context Control Plane.
 
----
+## Core Principles
 
-## 💡 Core Architectural Principles
+1. **Source Code vs. Gyrus**: Source code owns implementation logic and routine diffs; Gyrus owns architectural intent, system contracts, rationale, and operational workflows. Never mirror code diffs into Gyrus.
+2. **Resolve Context First**: Before designing, debugging, or changing architecture or contracts, discover existing context via MCP (`gyrus_suggest_context`, `gyrus_search`, `gyrus_neighbors`, `gyrus_traverse`; fall back to the `gyrus` CLI only if MCP is unavailable).
+3. **Update in the Same Change**: Any code change invalidating a contract, command example, or runbook must update its owning Gyrus concept in the same change.
+4. **One Clear Owner**: Preserve useful rationale and examples in the owning concept; link related concepts rather than duplicating contracts or reducing docs to link-only stubs. Label planned work clearly so proposals cannot be mistaken for implemented behavior.
+5. **Right-Sized Docs**: Not every change needs every document type. Update the existing contract owner; create a proposal or ADR only when recording a material design choice.
 
-1. **Source Code vs. Gyrus Context Plane**:
-   - **Source Code Owns Implementation**: Function logic, routine bug fixes, internal refactoring, and code-level changes belong exclusively in the codebase. Never duplicate routine code edits, method implementations, or commit diffs in Gyrus.
-   - **Gyrus Owns Architectural Intent & System Governance**: Gyrus captures the high-level context required to piece together current architecture and guide future changes across the engineering lifecycle.
+## Document Dependency Graph (Internal Development Flow)
 
-2. **The Gyrus 3-Phase SDLC Lifecycle (from standards-001)**:
-   - **Phase 1: Plan (Architecture & Design)**:
-     - `prd`: Business requirements, motivation, success metrics (*what & why*).
-     - `improvement-proposal`: Design alternatives, system architecture, testing strategy (*how*).
-     - `specification`: Final system blueprints, data models, protocols, component boundaries.
-     - `adr`: Short audit records of micro-decisions and tradeoffs (*why this way*).
-     - `standards`: Engineering quality rules, linting policies, and git conventions.
-   - **Phase 2: Implement (Build & Interfaces)**:
-     - *Source Code*: Canonical source of truth for implementation logic.
-     - `technical-reference`: Public API endpoints, CLI syntax, config parameters, and technical FAQs.
-     - `guide`: Developer onboarding tutorials, runbooks, and troubleshooting walkthroughs.
-   - **Phase 3: Post-Implement (Release & Portal)**:
-     - `release-note`: Version release tracking, changelogs, migration guides.
-     - `product`: Main product homepage portal summarizing value proposition and doc navigation.
+```mermaid
+flowchart TD
+    PRD["1. PRD (needs & outcomes)"] --> IP["2. Improvement Proposal (design & alternatives)"]
+    IP --> Spec["3. Specification (accepted contracts)"]
+    IP --> ADR["4. ADR (decisions & trade-offs)"]
+    IP --> Standards["5. Standards (engineering rules)"]
+    Spec --> Reference["6. Technical Reference (exact interfaces)"]
+    Spec --> Guide["7. Guide (setup & operation)"]
+    Reference --> Product["8. Product Page (value & navigation)"]
+    Guide --> Product
+    Product -. "when publishing a release" .-> Release["9. Release Note"]
+```
 
-3. **Context Resolution Before Architecture Changes**:
-   - Before designing new features or making architectural decisions, resolve relevant context:
-     - Primary: Native MCP `gyrus_suggest_context({ prompt: "<task>" })` or `gyrus_search`.
-     - Fallback (CLI): `gyrus suggest-context --prompt "<task>" --json`.
+- **Progression**: PRDs define the problem and success criteria; Improvement Proposals explore alternatives and risks before implementation settles; Specifications, ADRs, and Standards distill accepted contracts, individual tradeoffs, and reusable rules from the proposal; Technical References and Guides operationalize the spec; Product pages introduce value and link readers forward.
+- **Release Notes**: Only create for verified publication milestones—routine fixes and doc updates do not require one.
 
-4. **Document Mutability & Immutability Rules**:
-   - 🌿 **Living Documents** (`prd`, `specification`, `standards`, `technical-reference`, `guide`, `product`): Capture active system state. Update living specs and standards when architecture or public interfaces evolve.
-   - 📜 **Immutable Decision Logs** (`adr`, `improvement-proposal`, `release-note`): Historical snapshots. Once accepted (`status: accepted`), they are strictly immutable. When architectural decisions change:
-     1. Propose a NEW ADR (`gyrus create`).
-     2. Link the new ADR to supersede the old one (`gyrus link <new-id> <old-id> --rel-type supersedes`).
-     3. Update the old ADR status to `superseded` (`gyrus update <old-id> --status superseded`).
+## Document Types, Mutability & Scope
 
-5. **OKF Contract Schema Compliance**:
-   - Document IDs MUST match lower-case regex `^[a-z0-9-_]+$` (e.g., `adr-001-storage-engine`).
-   - Every contract concept requires YAML frontmatter defining `id`, `title`, `category`, `type`, `tenant`, `version`, `status`.
+| Type | Lifecycle | Typical Scope | Owns |
+| :--- | :--- | :--- | :--- |
+| `prd` | Living | Project | User problem, outcomes, constraints, success criteria |
+| `improvement-proposal` | Historical (immutable once finalized) | Project | Design alternatives, risks, acceptance criteria |
+| `specification` | Living | Project / Reference | Accepted system contracts, data rules, boundaries |
+| `adr` | Historical (immutable once `accepted`) | Project / Reference | One decision, rationale, alternatives, consequences |
+| `standards` | Living | Reference / Project | Repeatable engineering and documentation rules |
+| `technical-reference` | Living | Project | Exact CLI, MCP, API, and configuration schemas |
+| `guide` | Living | Project | Complete install, operation, validation, or troubleshooting flows |
+| `product` | Living | Project | Product value and navigation to supporting docs |
+| `glossary` | Living | Reference / Project | Shared domain definitions and terminology |
+| `release-note` | Historical (immutable once published) | Project | Verified release changes and upgrade impact |
+| `freeform` | Living | Project / Reference | Working notes not yet fitting a structured type |
 
-6. **Programmatic Exit Codes Protocol**:
-   - `0`: Success
-   - `1`: Schema / ID validation error
-   - `2`: Illegal lifecycle state transition
-   - `3`: Permission / authentication error
-   - `4`: Concurrency lock mismatch
-   - `5`: Record / Storage backend error
+### Scoping on Reads vs. Writes
+
+| Operation | Scope Strategy | Rationale |
+| :--- | :--- | :--- |
+| **Reading / Discovering** | Default to `scope: "all"` (or query both `project` and `reference`); narrow to `scope: "project"` + `project` to reduce noise, or `scope: "reference"` for shared standards only | Repo specs and PRDs live in `projects/<project>`, while cross-project standards, glossaries, and shared ADRs live in `reference` |
+| **Writing / Creating** | Set scope explicitly: `scope: "project"` + `project` (`<tenant>/projects/<project>/<id>`) for repo-specific docs; `scope: "reference"` (`<tenant>/reference/<id>`) *only* for shared cross-project standards, decisions, or glossaries | Prevents repo-specific docs from polluting shared `reference` scope |
+
+## Identity, Links & Immutability
+
+- **Frontmatter**: Required fields are `id`, `title`, `category`, `type`, `tenant`, `version`, `status`. Local `id` must match `^[a-z0-9-_]+$` and the filename without `.md`. Omit derived `name`, `scope`, and `project` from YAML.
+- **Qualified names**: Existing-concept reads, updates, and links require `<tenant>/reference/<id>` or `<tenant>/projects/<project>/<id>` (no short-ID fallback).
+- **Typed links**: Persist source-owned links only as `{concept: <qualified-name>, rel: <relation>}` using `depends_on`, `implements`, `supersedes`, or `mitigates`. Never store inverse copies (incoming queries derive backlinks).
+- **Superseding immutable records**: Never rewrite finalized ADR/proposal bodies. Create a replacement ADR → link it with `supersedes` → set the old record's status to `superseded`.
+- **Body links**: Use repository-relative links, never machine-specific `file://` URLs.
+
+Load the `gyrus` skill for discovery/querying workflows, MCP tool usage, User Discovery flow, ADR authoring sections, and Git initiative branching.
