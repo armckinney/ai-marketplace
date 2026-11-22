@@ -1,7 +1,7 @@
 {
   "name": "dev-essentials",
-  "version": "0.1.0",
-  "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+  "version": "1.0.0",
+  "description": "Core personal engineering guardrails, visual-first writing standards, and read-only code review",
   "author": {
     "name": "Andrew McKinney"
   },
@@ -11,7 +11,7 @@
   "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Dev Essentials",
-    "shortDescription": "Core personal development workflow, visual explanations, and documentation standards",
+    "shortDescription": "Personal engineering guardrails, visual-first writing standards, and code review",
     "developerName": "Andrew McKinney",
     "category": "Productivity",
     "logo": "./assets/logo.svg"
