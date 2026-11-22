@@ -8,7 +8,7 @@
   },
   "metadata": {
     "description": "Personal AI Marketplace for plugins, skills, rules, agents, hooks, and MCP servers",
-    "version": "0.1.0"
+    "version": "1.0.0"
   },
   "plugins": [
     {
@@ -20,14 +20,14 @@
     {
       "name": "dev-essentials",
       "source": "./plugins/dev-essentials",
-      "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
-      "version": "0.1.0"
+      "description": "Core personal engineering guardrails, visual-first writing standards, and read-only code review",
+      "version": "1.0.0"
     },
     {
       "name": "career-kit",
       "source": "./plugins/career-kit",
       "description": "Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials",
-      "version": "0.1.0"
+      "version": "1.0.0"
     }
   ]
 }

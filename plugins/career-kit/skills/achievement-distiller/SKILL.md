@@ -1,11 +1,12 @@
 ---
 name: achievement-distiller
 description: >-
-  Interviews software engineers on raw work logs, PRs, design docs, or rough
-  draft bullets to distill concise CAR stories (Challenge/Context, Action,
-  Result) and quantified XYZ resume bullet variants. Also bootstraps
-  career_profile.md when missing. Use when capturing brag-doc entries,
-  refining resume bullets, or turning engineering work into interview stories.
+  Interviews software engineers on raw work logs, PRs, design docs, CSV story
+  catalogs, or rough draft bullets to distill concise CAR stories
+  (Challenge/Context, Action, Result) and quantified XYZ resume bullet
+  variants. Also bootstraps career_profile.md when missing. Use when capturing
+  brag-doc entries, refining resume bullets, or turning engineering work into
+  interview stories.
 ---
 
 # Achievement Distiller (CAR + XYZ)
@@ -14,13 +15,13 @@ Transform raw engineering initiatives and rough work notes into crisp, evidence-
 
 ## Procedure
 
-1. **Context Discovery & Profile Bootstrap**:
-   - Inspect `career-kit/docs/refs/` (`career_profile.md`, `master_resume.md`, `linkedin_profile.md`, and any static `achievements_*.md`) plus existing files in `career-kit/docs/achievements/`.
-   - Treat `master_resume.md`, `linkedin_profile.md`, and `refs/achievements_*.md` as **strictly read-only**.
-   - If `career-kit/docs/refs/career_profile.md` does not exist, pause to interview the user for their contact links, target role(s)/seniority level, strategic lenses, and company-by-company growth arc, then persist it using [career_profile_template.md](templates/career_profile_template.md) before proceeding.
+1. **Context Discovery & Smart Profile Bootstrap**:
+   - Inspect `career-kit/docs/refs/` (`career_profile.md`, `master_resume.md`, `linkedin_profile.md`, `role-interests.csv`, `base-interview-questions.md`, `achievements_*.md`, and `achievement_stories.csv` / legacy `archievement_stories.csv`) plus existing files in `career-kit/docs/achievements/`.
+   - Treat all files in `career-kit/docs/refs/` except `career_profile.md` as **strictly read-only**.
+   - If `career-kit/docs/refs/career_profile.md` does not exist, pre-populate draft fields from `master_resume.md`, `role-interests.csv` (values, domain interests, target levels), and `base-interview-questions.md` (career progression arc) when present, then pause to interview the user to confirm and fill remaining gaps before persisting it using [career_profile_template.md](templates/career_profile_template.md).
 
-2. **Raw Initiative Intake**:
-   - Collect the user's raw input (brag-doc entry, PR/design doc summary, incident postmortem, or draft bullet) along with the associated **Company**, **Role Title**, and **Timeframe**.
+2. **Raw Initiative Intake (Manual or Reference Import)**:
+   - Collect the user's raw input—either pasted notes (brag-doc entry, PR/design doc summary, incident postmortem, draft bullet) OR selected raw rows/entries from read-only `refs/achievement_stories.csv` (or `refs/archievement_stories.csv`, e.g., `Title,Domains,Story`) and `refs/achievements_*.md`—along with the associated **Company**, **Role Title**, and **Timeframe**.
    - Cross-reference the company against the growth arc in `career_profile.md` so the narrative emphasizes the appropriate progression stage.
 
 3. **Structured Diagnostic Interview (Stop & Ask Gate)**:

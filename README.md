@@ -9,8 +9,8 @@ Licensed under [Apache-2.0](LICENSE).
 | Plugin | Version | Description | Docs |
 | :--- | :--- | :--- | :--- |
 | [`gyrus`](plugins/gyrus) | `1.0.0` | Gyrus: Unified Context Control Plane & Memory Engine for AI Agents | [Plugin Guide](docs/plugins/gyrus.md) |
-| [`dev-essentials`](plugins/dev-essentials) | `0.1.0` | Core personal development workflow, visual explanations, documentation standards, and engineering guardrails | [Plugin Guide](docs/plugins/dev-essentials.md) |
-| [`career-kit`](plugins/career-kit) | `0.1.0` | Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials | [Plugin Guide](docs/plugins/career-kit.md) |
+| [`dev-essentials`](plugins/dev-essentials) | `1.0.0` | Core personal engineering guardrails, visual-first writing standards, and read-only code review | [Plugin Guide](docs/plugins/dev-essentials.md) |
+| [`career-kit`](plugins/career-kit) | `1.0.0` | Career development toolkit for distilling CAR/XYZ achievements, curating tailored resumes, and preparing stage-specific interview materials | [Plugin Guide](docs/plugins/career-kit.md) |
 
 ## Native Installation
 

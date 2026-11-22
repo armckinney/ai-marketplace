@@ -1,40 +1,52 @@
 ---
 name: gyrus-index
-description: Gyrus Repository Primer skill. Interactively explores codebase architecture, dependencies, and standards, proposes synthesized baseline living documents (spec, standards, technical reference, onboarding guide), confirms with developer, and indexes them into Gyrus.
+description: >-
+  Gyrus Repository Primer skill. Surveys codebase architecture, dependencies,
+  and standards, proposes scope-aligned baseline living documents (spec,
+  standards, technical reference, guide, and optional product/glossary),
+  confirms with the developer, and creates validated Gyrus concepts.
 applyTo:
   - "**"
 ---
 
 # Gyrus Repository Primer Skill (`/gyrus-index`)
 
-This skill guides the AI agent to survey a new or existing codebase and prime Gyrus with high-level architectural living documents without duplicating low-level code implementation details.
+Survey a new or existing repository and prime Gyrus with high-level living concepts aligned to the Gyrus documentation strategy—without duplicating low-level code implementations.
 
----
-
-## 📋 The Primer Workflow
-
-When the developer invokes `/gyrus-index`, follow this 5-step interactive procedure:
+## Primer Workflow
 
 ### Step 1: Survey Codebase Architecture
-- Examine the root directory, package manifests (`go.mod`, `package.json`, `Cargo.toml`, etc.), README, build configs, and entry points.
-- Identify the project name, primary language, architectural style (e.g. modular monolith, microservices, CLI tool), and external dependencies.
+
+- Inspect root layout, package manifests (`go.mod`, `package.json`, `Cargo.toml`, `pyproject.toml`), `README.md`, build/test configs, and entry points.
+- Identify project slug, primary language/runtime, architectural style, public interfaces, and external dependencies.
 
 ### Step 2: Propose Baseline Living Documents
-Formulate a concise, synthesized proposal of 3-4 core living documents for the repository:
-1. **`spec-001-architecture.md`** (`type: specification`): System topology, high-level component boundaries, and data flows.
-2. **`standards-001-guidelines.md`** (`type: standards`): Engineering quality standards, code organization, testing strategy, and git conventions.
-3. **`tech-ref-001-api-cli.md`** (`type: technical-reference`): Public CLI commands, API interfaces, configuration parameters, or technical lookups.
-4. **`guide-001-onboarding.md`** (`type: guide`): Developer environment setup, build instructions, and common runbooks.
+
+Propose a focused set of project-scoped living concepts (use `reference` scope only for standards or decisions shared across multiple repositories):
+
+| Suggested Local ID | Type | Scope | Captures |
+| :--- | :--- | :--- | :--- |
+| `spec-001-architecture` | `specification` | `project` | System topology, component boundaries, core contracts, data flows |
+| `standards-001-guidelines` | `standards` | `project` or `reference` | Engineering quality rules, testing strategy, repo/git conventions |
+| `tech-ref-001-interfaces` | `technical-reference` | `project` | Public CLI commands, API/MCP contracts, configuration parameters |
+| `guide-001-onboarding` | `guide` | `project` | Environment setup, build/test workflow, common runbooks |
+| `glossary-001-domain` *(optional)* | `glossary` | `project` or `reference` | Shared domain terms when the codebase introduces dense jargon |
 
 ### Step 3: Developer Review & Confirmation
-- Present the synthesized proposal to the developer with a clear overview of what each document will capture.
-- Ask for confirmation or adjustments before creating any files.
 
-### Step 4: Scaffold Confirmed Documents
-- Once approved, create the documents in `.gyrus/concepts/<tenant>/reference/` using valid OKF YAML frontmatter:
-  - `id`, `title`, `category`, `type`, `tenant`, `version: 1`, `status: active`.
-- Ensure documents capture **high-level intent and boundaries**, not line-by-line function implementations.
+- Present the proposed document table (local IDs, types, scope/project, and high-level outline) to the developer.
+- Confirm tenant, project slug, and any additions/omissions before creating concepts.
 
-### Step 5: Verify retrieval
-- Run `gyrus search --query "" --scope all --max-results 0 --json` and compare the complete qualified-name inventory with the created concepts. OKF providers read concepts and links directly; no sync command or SQLite index is required.
-- Inform the developer that Gyrus is primed and ready to provide architectural context to all AI agents.
+### Step 4: Create Confirmed Concepts
+
+- Prefer `gyrus_create` MCP tool (or `gyrus create` CLI) with explicit `tenant`, `scope`, and `project` so Gyrus enforces schema validation and canonical paths:
+  - Project scope: `.gyrus/concepts/<tenant>/projects/<project>/<id>.md`
+  - Reference scope: `.gyrus/concepts/<tenant>/reference/<id>.md`
+- Ensure valid OKF frontmatter (`id`, `title`, `category`, `type`, `tenant`, `version: 1`, `status: active`) and omit derived fields (`name`, `scope`, `project`).
+- Capture **high-level intent, boundaries, and rationale**; add typed links (`depends_on`, `implements`) between related baseline concepts using qualified names.
+
+### Step 5: Verify Retrieval & Schema Compliance
+
+- List indexed concepts via `gyrus_search` (empty query) or `gyrus search --query "" --scope all --max-results 0 --json` and confirm every created qualified name appears.
+- Run `gyrus validate <filepath> --json` on any manually written files.
+- Report created qualified names and confirmed validation output to the developer.

@@ -2,10 +2,11 @@
 name: resume-curator
 description: >-
   Analyzes a target Job Description (JD) alongside a candidate's career profile,
-  master resume, LinkedIn export, and distilled CAR/XYZ achievement bank to
-  curate a tailored, high-impact resume. Pauses to verify critical JD gaps
-  before drafting and outputs a Fit & Keyword Coverage summary. Use when
-  tailoring, rewriting, or optimizing a resume or CV for a specific role.
+  master resume, LinkedIn export, role interests, and distilled CAR/XYZ
+  achievement bank to curate a tailored, high-impact resume. Pauses to verify
+  critical JD gaps before drafting and outputs a Fit & Keyword Coverage
+  summary. Use when tailoring, rewriting, or optimizing a resume or CV for a
+  specific role.
 ---
 
 # Resume Curator
@@ -17,15 +18,16 @@ Tailor a candidate's resume to a specific target Job Description (JD) using veri
 1. **Context Verification & Intake**:
    - Require the **Target Company Name** and **Target Job Description** (pasted text or non-login-gated URL).
    - Read all available baseline and distilled context:
-     - `career-kit/docs/refs/career_profile.md` (if missing, pause to bootstrap it using [career_profile_template.md](../achievement-distiller/templates/career_profile_template.md))
+     - `career-kit/docs/refs/career_profile.md` (if missing, pre-draft from `master_resume.md`, `role-interests.csv`, and `base-interview-questions.md` when present, then pause to confirm gaps using [career_profile_template.md](../achievement-distiller/templates/career_profile_template.md))
      - `career-kit/docs/refs/master_resume.md`
      - `career-kit/docs/refs/linkedin_profile.md` (if the user supplies a LinkedIn URL instead, remind them not to scrape LinkedIn and ask them to paste/export it here)
-     - `career-kit/docs/refs/achievements_*.md` (if present)
-     - All files under `career-kit/docs/achievements/*.md`
-   - Keep `master_resume.md`, `linkedin_profile.md`, and `refs/achievements_*.md` **strictly read-only**.
+     - `career-kit/docs/refs/role-interests.csv` (if present — calibrate role-archetype, seniority, and domain priorities)
+     - `career-kit/docs/refs/achievements_*.md` and `career-kit/docs/refs/achievement_stories.csv` (also check legacy spelling `archievement_stories.csv`) as auxiliary evidence sources
+     - All distilled files under `career-kit/docs/achievements/*.md`
+   - Keep all files in `career-kit/docs/refs/` except `career_profile.md` **strictly read-only**.
 
 2. **JD Decomposition & Seniority Calibration**:
-   - Analyze the target JD and categorize requirements into:
+   - Analyze the target JD (cross-checking against `career_profile.md` and `refs/role-interests.csv`) and categorize requirements into:
      1. **Must-Have Technical Stack**: Primary languages, frameworks, infrastructure/cloud tooling, datastores, and operational practices.
      2. **System & Domain Challenges**: Core problems the team is hiring to solve (e.g., latency/throughput scaling, reliability/observability, product velocity, data/ML pipelines, security, migration).
      3. **Seniority & Archetype Signals**: Expected scope (hands-on builder, Tech Lead, cross-team Architect, Organizational Solver, or Engineering Manager) and leadership expectations (mentorship, RFC governance, stakeholder alignment).

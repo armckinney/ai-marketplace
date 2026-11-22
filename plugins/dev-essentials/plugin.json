@@ -1,8 +1,8 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "dev-essentials",
-  "version": "0.1.0",
-  "description": "Core personal development workflow, visual explanations, documentation standards, and engineering guardrails",
+  "version": "1.0.0",
+  "description": "Core personal engineering guardrails, visual-first writing standards, and read-only code review",
   "author": {
     "name": "Andrew McKinney",
     "url": "https://github.com/armckinney"
@@ -13,7 +13,7 @@
   "keywords": [
     "personal-dev",
     "validation-driven",
-    "visual-explainer",
+    "writing-standards",
     "documentation",
     "code-review"
   ]
